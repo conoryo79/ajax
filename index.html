@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+	<body>
+		<div id="demo"></div>
+		<button type="button" onclick="loadXMLDoc()">Change Content</button>
+		<script>
+			function loadXMLDoc(){
+				var req = new XMLHttpRequest();
+				req.onreadystatechange = function(){
+					if ((this.readyState==4)&&(this.status==200)){
+						//document.getElementById("demo").innerHTML=req.responseText;
+						var text = req.responseText;
+						parser = new DOMParser();
+						//var xmlDoc = parser.parseFromString(text, "text/xml");
+						var xmlDoc=req.responseXML;
+						var lista= xmlDoc.getElementsByTagName("ARTIST");
+						var texto="";
+						for (i=0;i<lista.length;i++){
+							texto += lista[i].childNodes[0].nodeValue+"<br/>";
+						}
+						document.getElementById("demo").innerHTML = texto;
+					}
+				};
+				req.open("GET", "catalogo.xml",true); 
+				req.send();
+		}
+		</script>
+	</body>
+</html>
